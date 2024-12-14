@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  backend:
+    build: .
+    container_name: backend
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    environment:
+      MONGO_URI: ${MONGO_URI}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - ./src:/server/src
+      - ./test:/server/test
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest
+    env_file:
+      - .env
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+
+networks:
+  app-network:
+    driver: bridge

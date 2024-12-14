@@ -4,13 +4,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ResponseService } from './common/services/response.service';
+import auth from './config/auth.config';
 import database from './config/database.config';
+import { AuthModule } from './modules/auth/auth.module';
 import { LoggerModule } from './modules/logger/logger.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [database],
+      load: [database, auth],
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({
@@ -20,9 +23,10 @@ import { LoggerModule } from './modules/logger/logger.module';
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
-    LoggerModule
+    LoggerModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ResponseService],
 })
 export class AppModule { }

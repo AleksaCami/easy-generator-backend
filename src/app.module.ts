@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import database from './config/database.config';
+import { LoggerModule } from './modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import database from './config/database.config';
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
+    LoggerModule
   ],
   controllers: [AppController],
   providers: [AppService],
